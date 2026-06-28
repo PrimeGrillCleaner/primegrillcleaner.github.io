@@ -9,24 +9,25 @@
     body {
       margin: 0;
       font-family: system-ui, sans-serif;
-      background: #f5f5f5;
-      color: #222;
+      background: #111; /* black */
+      color: #eee; /* light text */
       padding: 2rem;
     }
 
     h1 {
       text-align: center;
       margin-bottom: 2rem;
-      color: #1f6f4a;
+      color: #f4a51c; /* orange */
       font-size: 2rem;
     }
 
     .gallery-set {
-      background: #fff;
-      border: 1px solid #ddd;
+      background: #1a1a1a; /* dark grey card */
+      border: 1px solid #2a2a2a; /* medium grey border */
       border-radius: 0.8rem;
       padding: 1rem;
       margin-bottom: 2rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
     }
 
     .gallery-row {
@@ -41,14 +42,14 @@
       height: 240px;
       object-fit: cover;
       border-radius: 0.6rem;
-      border: 1px solid #ccc;
-      background: #eee;
+      border: 1px solid #333;
+      background: #222;
     }
 
     .arrow {
       font-size: 2.2rem;
       font-weight: 700;
-      color: #444;
+      color: #f4a51c; /* orange arrow */
       text-align: center;
     }
 
@@ -57,16 +58,18 @@
       width: fit-content;
       margin: 2rem auto 0;
       padding: 0.7rem 1.4rem;
-      background: #f4a51c;
-      color: #222;
+      background: #f4a51c; /* orange */
+      color: #111; /* black text */
       font-weight: 600;
       border-radius: 999px;
       text-decoration: none;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+      transition: 0.2s;
     }
 
     .back-btn:hover {
       background: #ffb63f;
+      transform: translateY(-2px);
     }
 
     @media (max-width: 700px) {
@@ -85,27 +88,27 @@
   <!-- SET 1 -->
   <div class="gallery-set">
     <div class="gallery-row">
-      <img src="Gallery-1.png" alt="Before photo placeholder">
+      <img src="Gallery-1.png" alt="Before photo">
       <div class="arrow">➤</div>
-      <img src="Gallery-2.png" alt="After photo placeholder">
+      <img src="Gallery-2.png" alt="After photo">
     </div>
   </div>
 
   <!-- SET 2 -->
   <div class="gallery-set">
     <div class="gallery-row">
-      <img src="Gallery-3.png" alt="Before photo placeholder">
+      <img src="Gallery-3.png" alt="Before photo">
       <div class="arrow">➤</div>
-      <img src="Gallery-4.png" alt="After photo placeholder">
+      <img src="Gallery-4.png" alt="After photo">
     </div>
   </div>
 
   <!-- SET 3 -->
   <div class="gallery-set">
     <div class="gallery-row">
-      <img src="Gallery-5.png" alt="Before photo placeholder">
+      <img src="Gallery-5.png" alt="Before photo">
       <div class="arrow">➤</div>
-      <img src="Gallery-6.png" alt="After photo placeholder">
+      <img src="Gallery-6.png" alt="After photo">
     </div>
   </div>
 
