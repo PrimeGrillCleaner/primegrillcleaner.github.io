@@ -89,7 +89,6 @@
     .totals div {
       margin: 2px 0;
     }
-    /* Printable invoice */
     #invoicePreview {
       margin-top: 30px;
       padding: 20px;
@@ -104,13 +103,6 @@
       margin-top: 15px;
     }
     @media print {
-      body {
-        background: #ffffff;
-      }
-      .container {
-        box-shadow: none;
-        border-radius: 0;
-      }
       #controls {
         display: none;
       }
@@ -118,10 +110,11 @@
   </style>
 </head>
 <body>
+
 <div class="container" id="controls">
   <h1>Prime Grill Cleaner – Invoice Generator</h1>
   <p style="font-size:0.9rem;color:#4b5563;margin-bottom:16px;">
-    Private tool for generating invoices. Bookmark this page; don’t link it in your public navigation.
+    Private tool for generating invoices. Bookmark this page; don’t link it publicly.
   </p>
 
   <!-- Basic info -->
@@ -140,7 +133,7 @@
     </div>
   </div>
 
-  <!-- Your business info -->
+  <!-- Business info -->
   <div class="row">
     <div class="col">
       <label for="fromName">From (business)</label>
@@ -148,7 +141,7 @@
     </div>
     <div class="col">
       <label for="fromAddress">From address</label>
-      <textarea id="fromAddress" placeholder="Your name&#10;Street&#10;City, ON&#10;Postal Code"></textarea>
+      <textarea id="fromAddress" placeholder="Andre Proulx&#10;Burlington, ON&#10;Canada"></textarea>
     </div>
   </div>
 
@@ -176,9 +169,7 @@
         <th style="width:60px;">Remove</th>
       </tr>
     </thead>
-    <tbody id="itemsBody">
-      <!-- Rows added by JS -->
-    </tbody>
+    <tbody id="itemsBody"></tbody>
   </table>
   <button class="btn btn-secondary" type="button" onclick="addItemRow()">+ Add service</button>
 
@@ -204,14 +195,13 @@
     <div><strong>Total: $<span id="totalDisplay">0.00</span></strong></div>
   </div>
 
-  <!-- Actions -->
+  <!-- Save PDF -->
   <div style="margin-top:20px;">
-    <button class="btn btn-primary" type="button" onclick="generateInvoice()">Generate invoice</button>
-    <button class="btn btn-secondary" type="button" onclick="window.print()">Print / Save as PDF</button>
+    <button class="btn btn-primary" type="button" onclick="savePDF()">Save PDF</button>
   </div>
 </div>
 
-<!-- Invoice preview (printable) -->
+<!-- Invoice preview -->
 <div class="container" id="invoicePreview" style="display:none;">
   <h2>Invoice</h2>
   <div style="display:flex;justify-content:space-between;flex-wrap:wrap;margin-bottom:16px;">
@@ -241,9 +231,7 @@
         <th style="width:120px;">Line total ($)</th>
       </tr>
     </thead>
-    <tbody id="previewItemsBody">
-      <!-- Filled by JS -->
-    </tbody>
+    <tbody id="previewItemsBody"></tbody>
   </table>
 
   <div class="totals">
@@ -314,7 +302,6 @@
   function generateInvoice() {
     updateTotals();
 
-    // Basic info
     const invoiceNumber = document.getElementById("invoiceNumber").value;
     const invoiceDate = document.getElementById("invoiceDate").value;
     const dueDate = document.getElementById("dueDate").value;
@@ -333,7 +320,6 @@
     const hst = document.getElementById("hstDisplay").textContent;
     const total = document.getElementById("totalDisplay").textContent;
 
-    // Fill preview
     document.getElementById("previewInvoiceNumber").textContent = invoiceNumber || "";
     document.getElementById("previewInvoiceDate").textContent = invoiceDate || "";
     document.getElementById("previewDueDate").textContent = dueDate || "";
@@ -352,7 +338,6 @@
     document.getElementById("previewPaymentTerms").textContent = paymentTerms || "";
     document.getElementById("previewPaymentInstructions").innerHTML = paymentInstructions || "";
 
-    // Fill items
     const previewBody = document.getElementById("previewItemsBody");
     previewBody.innerHTML = "";
     const rows = document.querySelectorAll("#itemsBody tr");
@@ -375,14 +360,25 @@
     });
 
     document.getElementById("invoicePreview").style.display = "block";
-    window.scrollTo({ top: document.getElementById("invoicePreview").offsetTop - 10, behavior: "smooth" });
   }
 
-  // Add a couple of default rows for your BBQ services
+  function savePDF() {
+    generateInvoice();
+
+    const invoiceNumber = document.getElementById("invoiceNumber").value || "Invoice";
+    const filename = `${invoiceNumber} - Prime Grill Cleaner.pdf`;
+
+    const link = document.createElement("a");
+    link.download = filename;
+
+    window.print();
+  }
+
   window.addEventListener("DOMContentLoaded", () => {
     addItemRow("BBQ deep clean", 1, 120);
     addItemRow("Travel fee", 1, 20);
   });
 </script>
+
 </body>
 </html>
