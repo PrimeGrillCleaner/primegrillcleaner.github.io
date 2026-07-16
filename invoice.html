@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Prime Grill Cleaner – Invoice Generator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+    h1 {
+      margin-bottom: 10px;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: #ffffff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 12px;
+    }
+    .col {
+      flex: 1 1 250px;
+    }
+    label {
+      display: block;
+      font-size: 0.9rem;
+      margin-bottom: 4px;
+      font-weight: 600;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 6px 8px;
+      font-size: 0.9rem;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+    textarea {
+      min-height: 60px;
+      resize: vertical;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      margin-bottom: 10px;
+      font-size: 0.9rem;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 6px 8px;
+      text-align: left;
+    }
+    th {
+      background: #f0f0f0;
+    }
+    .btn {
+      display: inline-block;
+      padding: 8px 14px;
+      font-size: 0.9rem;
+      border-radius: 4px;
+      border: none;
+      cursor: pointer;
+      margin-right: 8px;
+    }
+    .btn-primary {
+      background: #2563eb;
+      color: #fff;
+    }
+    .btn-secondary {
+      background: #e5e7eb;
+      color: #111827;
+    }
+    .totals {
+      margin-top: 10px;
+      text-align: right;
+      font-size: 0.95rem;
+    }
+    .totals div {
+      margin: 2px 0;
+    }
+    /* Printable invoice */
+    #invoicePreview {
+      margin-top: 30px;
+      padding: 20px;
+      border-radius: 8px;
+      background: #ffffff;
+      border: 1px solid #e5e7eb;
+    }
+    #invoicePreview h2 {
+      margin-top: 0;
+    }
+    #invoicePreview table {
+      margin-top: 15px;
+    }
+    @media print {
+      body {
+        background: #ffffff;
+      }
+      .container {
+        box-shadow: none;
+        border-radius: 0;
+      }
+      #controls {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="container" id="controls">
+  <h1>Prime Grill Cleaner – Invoice Generator</h1>
+  <p style="font-size:0.9rem;color:#4b5563;margin-bottom:16px;">
+    Private tool for generating invoices. Bookmark this page; don’t link it in your public navigation.
+  </p>
+
+  <!-- Basic info -->
+  <div class="row">
+    <div class="col">
+      <label for="invoiceNumber">Invoice #</label>
+      <input id="invoiceNumber" type="text" placeholder="PGC-001">
+    </div>
+    <div class="col">
+      <label for="invoiceDate">Invoice date</label>
+      <input id="invoiceDate" type="date">
+    </div>
+    <div class="col">
+      <label for="dueDate">Due date</label>
+      <input id="dueDate" type="date">
+    </div>
+  </div>
+
+  <!-- Your business info -->
+  <div class="row">
+    <div class="col">
+      <label for="fromName">From (business)</label>
+      <input id="fromName" type="text" value="Prime Grill Cleaner">
+    </div>
+    <div class="col">
+      <label for="fromAddress">From address</label>
+      <textarea id="fromAddress" placeholder="Your name&#10;Street&#10;City, ON&#10;Postal Code"></textarea>
+    </div>
+  </div>
+
+  <!-- Client info -->
+  <div class="row">
+    <div class="col">
+      <label for="clientName">Client name</label>
+      <input id="clientName" type="text" placeholder="John Smith">
+    </div>
+    <div class="col">
+      <label for="clientAddress">Client address</label>
+      <textarea id="clientAddress" placeholder="Street&#10;City, ON&#10;Postal Code"></textarea>
+    </div>
+  </div>
+
+  <!-- Line items -->
+  <h3 style="margin-top:20px;">Services</h3>
+  <table id="itemsTable">
+    <thead>
+      <tr>
+        <th>Description</th>
+        <th style="width:80px;">Qty</th>
+        <th style="width:120px;">Rate ($)</th>
+        <th style="width:120px;">Line total ($)</th>
+        <th style="width:60px;">Remove</th>
+      </tr>
+    </thead>
+    <tbody id="itemsBody">
+      <!-- Rows added by JS -->
+    </tbody>
+  </table>
+  <button class="btn btn-secondary" type="button" onclick="addItemRow()">+ Add service</button>
+
+  <!-- HST + totals -->
+  <div class="row" style="margin-top:16px;">
+    <div class="col">
+      <label for="hstRate">HST rate (%)</label>
+      <input id="hstRate" type="number" step="0.01" value="13">
+    </div>
+    <div class="col">
+      <label for="paymentTerms">Payment terms</label>
+      <input id="paymentTerms" type="text" value="Due on receipt">
+    </div>
+    <div class="col">
+      <label for="paymentInstructions">Payment instructions</label>
+      <textarea id="paymentInstructions" placeholder="e-Transfer to: your-email@example.com"></textarea>
+    </div>
+  </div>
+
+  <div class="totals" id="totalsDisplay">
+    <div>Subtotal: $<span id="subtotalDisplay">0.00</span></div>
+    <div>HST: $<span id="hstDisplay">0.00</span></div>
+    <div><strong>Total: $<span id="totalDisplay">0.00</span></strong></div>
+  </div>
+
+  <!-- Actions -->
+  <div style="margin-top:20px;">
+    <button class="btn btn-primary" type="button" onclick="generateInvoice()">Generate invoice</button>
+    <button class="btn btn-secondary" type="button" onclick="window.print()">Print / Save as PDF</button>
+  </div>
+</div>
+
+<!-- Invoice preview (printable) -->
+<div class="container" id="invoicePreview" style="display:none;">
+  <h2>Invoice</h2>
+  <div style="display:flex;justify-content:space-between;flex-wrap:wrap;margin-bottom:16px;">
+    <div>
+      <strong>From:</strong><br>
+      <span id="previewFromName"></span><br>
+      <span id="previewFromAddress"></span>
+    </div>
+    <div>
+      <strong>To:</strong><br>
+      <span id="previewClientName"></span><br>
+      <span id="previewClientAddress"></span>
+    </div>
+    <div style="margin-top:8px;">
+      <strong>Invoice #:</strong> <span id="previewInvoiceNumber"></span><br>
+      <strong>Date:</strong> <span id="previewInvoiceDate"></span><br>
+      <strong>Due:</strong> <span id="previewDueDate"></span>
+    </div>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Description</th>
+        <th style="width:80px;">Qty</th>
+        <th style="width:120px;">Rate ($)</th>
+        <th style="width:120px;">Line total ($)</th>
+      </tr>
+    </thead>
+    <tbody id="previewItemsBody">
+      <!-- Filled by JS -->
+    </tbody>
+  </table>
+
+  <div class="totals">
+    <div>Subtotal: $<span id="previewSubtotal"></span></div>
+    <div>HST (<span id="previewHstRate"></span>%): $<span id="previewHst"></span></div>
+    <div><strong>Total: $<span id="previewTotal"></span></strong></div>
+  </div>
+
+  <div style="margin-top:16px;font-size:0.9rem;">
+    <strong>Payment terms:</strong> <span id="previewPaymentTerms"></span><br>
+    <strong>Payment instructions:</strong><br>
+    <span id="previewPaymentInstructions"></span>
+  </div>
+</div>
+
+<script>
+  function addItemRow(description = "", qty = 1, rate = 0) {
+    const tbody = document.getElementById("itemsBody");
+    const tr = document.createElement("tr");
+
+    tr.innerHTML = `
+      <td><input type="text" class="desc" placeholder="BBQ deep clean" value="${description}"></td>
+      <td><input type="number" class="qty" min="0" step="1" value="${qty}"></td>
+      <td><input type="number" class="rate" min="0" step="0.01" value="${rate}"></td>
+      <td>$<span class="lineTotal">0.00</span></td>
+      <td><button type="button" class="btn btn-secondary" onclick="removeItemRow(this)">X</button></td>
+    `;
+    tbody.appendChild(tr);
+    updateTotals();
+    attachChangeHandlers(tr);
+  }
+
+  function attachChangeHandlers(row) {
+    const qtyInput = row.querySelector(".qty");
+    const rateInput = row.querySelector(".rate");
+    const descInput = row.querySelector(".desc");
+    [qtyInput, rateInput, descInput].forEach(input => {
+      input.addEventListener("input", updateTotals);
+    });
+  }
+
+  function removeItemRow(button) {
+    const row = button.closest("tr");
+    row.remove();
+    updateTotals();
+  }
+
+  function updateTotals() {
+    const rows = document.querySelectorAll("#itemsBody tr");
+    let subtotal = 0;
+    rows.forEach(row => {
+      const qty = parseFloat(row.querySelector(".qty").value) || 0;
+      const rate = parseFloat(row.querySelector(".rate").value) || 0;
+      const lineTotal = qty * rate;
+      row.querySelector(".lineTotal").textContent = lineTotal.toFixed(2);
+      subtotal += lineTotal;
+    });
+
+    const hstRate = parseFloat(document.getElementById("hstRate").value) || 0;
+    const hst = subtotal * (hstRate / 100);
+    const total = subtotal + hst;
+
+    document.getElementById("subtotalDisplay").textContent = subtotal.toFixed(2);
+    document.getElementById("hstDisplay").textContent = hst.toFixed(2);
+    document.getElementById("totalDisplay").textContent = total.toFixed(2);
+  }
+
+  function generateInvoice() {
+    updateTotals();
+
+    // Basic info
+    const invoiceNumber = document.getElementById("invoiceNumber").value;
+    const invoiceDate = document.getElementById("invoiceDate").value;
+    const dueDate = document.getElementById("dueDate").value;
+
+    const fromName = document.getElementById("fromName").value;
+    const fromAddress = document.getElementById("fromAddress").value.replace(/\n/g, "<br>");
+
+    const clientName = document.getElementById("clientName").value;
+    const clientAddress = document.getElementById("clientAddress").value.replace(/\n/g, "<br>");
+
+    const hstRate = document.getElementById("hstRate").value;
+    const paymentTerms = document.getElementById("paymentTerms").value;
+    const paymentInstructions = document.getElementById("paymentInstructions").value.replace(/\n/g, "<br>");
+
+    const subtotal = document.getElementById("subtotalDisplay").textContent;
+    const hst = document.getElementById("hstDisplay").textContent;
+    const total = document.getElementById("totalDisplay").textContent;
+
+    // Fill preview
+    document.getElementById("previewInvoiceNumber").textContent = invoiceNumber || "";
+    document.getElementById("previewInvoiceDate").textContent = invoiceDate || "";
+    document.getElementById("previewDueDate").textContent = dueDate || "";
+
+    document.getElementById("previewFromName").textContent = fromName || "";
+    document.getElementById("previewFromAddress").innerHTML = fromAddress || "";
+
+    document.getElementById("previewClientName").textContent = clientName || "";
+    document.getElementById("previewClientAddress").innerHTML = clientAddress || "";
+
+    document.getElementById("previewSubtotal").textContent = subtotal;
+    document.getElementById("previewHstRate").textContent = hstRate || "0";
+    document.getElementById("previewHst").textContent = hst;
+    document.getElementById("previewTotal").textContent = total;
+
+    document.getElementById("previewPaymentTerms").textContent = paymentTerms || "";
+    document.getElementById("previewPaymentInstructions").innerHTML = paymentInstructions || "";
+
+    // Fill items
+    const previewBody = document.getElementById("previewItemsBody");
+    previewBody.innerHTML = "";
+    const rows = document.querySelectorAll("#itemsBody tr");
+    rows.forEach(row => {
+      const desc = row.querySelector(".desc").value;
+      const qty = row.querySelector(".qty").value;
+      const rate = row.querySelector(".rate").value;
+      const lineTotal = row.querySelector(".lineTotal").textContent;
+
+      if (!desc && !parseFloat(lineTotal)) return;
+
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${desc || ""}</td>
+        <td>${qty || "0"}</td>
+        <td>${parseFloat(rate || 0).toFixed(2)}</td>
+        <td>${lineTotal}</td>
+      `;
+      previewBody.appendChild(tr);
+    });
+
+    document.getElementById("invoicePreview").style.display = "block";
+    window.scrollTo({ top: document.getElementById("invoicePreview").offsetTop - 10, behavior: "smooth" });
+  }
+
+  // Add a couple of default rows for your BBQ services
+  window.addEventListener("DOMContentLoaded", () => {
+    addItemRow("BBQ deep clean", 1, 120);
+    addItemRow("Travel fee", 1, 20);
+  });
+</script>
+</body>
+</html>
