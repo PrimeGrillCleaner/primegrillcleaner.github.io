@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-
   <url>
-    <loc>https://primegrillcleaner.github.io/</loc>
+    <loc>https://primegrillcleaner.com/</loc>
     <priority>1.0</priority>
+    <lastmod>2026-07-25</lastmod>
   </url>
-
   <url>
-    <loc>https://primegrillcleaner.github.io/bbq.html</loc>
+    <loc>https://primegrillcleaner.com/bbq.html</loc>
     <priority>0.9</priority>
+    <lastmod>2026-07-25</lastmod>
   </url>
-
 </urlset>
