@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
-
-Sitemap: https://primegrillcleaner.github.io/sitemap.xml
+Disallow: /invoice.html
+Disallow: /thankyou.html
+Sitemap: https://primegrillcleaner.com/sitemap.xml
