@@ -2,4 +2,5 @@ User-agent: *
 Allow: /
 Disallow: /invoice.html
 Disallow: /thankyou.html
+Disallow: /gallery.html
 Sitemap: https://primegrillcleaner.com/sitemap.xml
