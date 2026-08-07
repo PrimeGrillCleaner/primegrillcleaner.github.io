@@ -5,30 +5,118 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Before & After Gallery | Prime Grill Cleaner</title>
-
   <style>
     body {
       margin: 0;
       font-family: system-ui, sans-serif;
-      background: #111; /* black */
-      color: #eee; /* light text */
+      background: #1a1a1a;
+      color: #e6e6e6;
       padding: 2rem;
+      line-height: 1.6;
     }
 
     h1 {
       text-align: center;
-      margin-bottom: 2rem;
-      color: #f4a51c; /* orange */
+      margin-bottom: 0.5rem;
+      color: #D28369;
       font-size: 2rem;
     }
 
-    .gallery-set {
-      background: #1a1a1a; /* dark grey card */
-      border: 1px solid #2a2a2a; /* medium grey border */
-      border-radius: 0.8rem;
-      padding: 1rem;
+    .subtitle {
+      text-align: center;
+      color: #bbbbbb;
+      font-size: 0.95rem;
       margin-bottom: 2rem;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+      max-width: 32rem;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .lookup-bar {
+      max-width: 420px;
+      margin: 0 auto 2.5rem;
+      display: flex;
+      gap: 0.6rem;
+    }
+
+    .lookup-bar input {
+      flex: 1;
+      padding: 0.65rem 0.9rem;
+      border-radius: 0.5rem;
+      border: 1px solid #444;
+      background: #1f1f1f;
+      color: #e6e6e6;
+      font-size: 0.95rem;
+    }
+
+    .lookup-bar input:focus {
+      outline: none;
+      border-color: #D28369;
+      box-shadow: 0 0 0 2px rgba(210, 131, 105, 0.3);
+    }
+
+    .lookup-bar button {
+      padding: 0.65rem 1.2rem;
+      border-radius: 0.5rem;
+      border: none;
+      background: #D28369;
+      color: #111;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .lookup-bar button:hover {
+      background: #dba594;
+    }
+
+    .lookup-status {
+      text-align: center;
+      font-size: 0.85rem;
+      color: #bbbbbb;
+      margin-bottom: 1.5rem;
+      min-height: 1.2rem;
+    }
+
+    .show-all-btn {
+      position: relative;
+      z-index: 5;
+      display: block;
+      margin: 0 auto 2rem;
+      padding: 0.5rem 1.1rem;
+      border-radius: 999px;
+      border: 1px solid #444;
+      background: transparent;
+      color: #e6e6e6;
+      font-size: 0.85rem;
+      cursor: pointer;
+      pointer-events: auto;
+    }
+
+    .show-all-btn:hover {
+      border-color: #D28369;
+      color: #D28369;
+    }
+
+    .gallery-set {
+      background: #2a2a2a;
+      border: 1px solid #3a3a3a;
+      border-radius: 0.9rem;
+      padding: 1.2rem;
+      margin: 0 auto 2rem;
+      max-width: 950px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+
+    .job-number {
+      font-size: 0.8rem;
+      color: #bbbbbb;
+      margin-bottom: 0.8rem;
+      letter-spacing: 0.03em;
+    }
+
+    .job-number strong {
+      color: #D28369;
     }
 
     .gallery-row {
@@ -43,14 +131,26 @@
       height: 240px;
       object-fit: cover;
       border-radius: 0.6rem;
-      border: 1px solid #333;
-      background: #222;
+      border: 1px solid #3a3a3a;
+      background: #1f1f1f;
+    }
+
+    .img-wrap {
+      text-align: center;
+    }
+
+    .img-label {
+      font-size: 0.75rem;
+      color: #888;
+      margin-top: 0.4rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
     }
 
     .arrow {
       font-size: 2.2rem;
       font-weight: 700;
-      color: #f4a51c; /* orange arrow */
+      color: #D28369;
       text-align: center;
     }
 
@@ -59,8 +159,8 @@
       width: fit-content;
       margin: 2rem auto 0;
       padding: 0.7rem 1.4rem;
-      background: #f4a51c; /* orange */
-      color: #111; /* black text */
+      background: #D28369;
+      color: #111;
       font-weight: 600;
       border-radius: 999px;
       text-decoration: none;
@@ -69,51 +169,145 @@
     }
 
     .back-btn:hover {
-      background: #ffb63f;
+      background: #dba594;
       transform: translateY(-2px);
+    }
+
+    .no-results {
+      text-align: center;
+      color: #bbbbbb;
+      font-size: 0.95rem;
+      margin: 2rem 0;
+      display: none;
     }
 
     @media (max-width: 700px) {
       .gallery-row {
         grid-template-columns: 1fr;
       }
-      .arrow { display: none; }
+      .arrow {
+        transform: rotate(90deg);
+      }
+      .lookup-bar {
+        flex-direction: column;
+      }
     }
   </style>
 </head>
-
 <body>
+  <h1>Before &amp; After Photos</h1>
+  <p class="subtitle">
+    Have a job number from your invoice? Enter it below to jump straight to your photos.
+  </p>
 
-  <h1>Before & After Photos</h1>
+  <div class="lookup-bar">
+    <input type="text" id="jobSearch" placeholder="Enter job number (e.g. 1042)" inputmode="numeric">
+    <button type="button" id="findBtn">Find Photos</button>
+  </div>
+  <div class="lookup-status" id="lookupStatus"></div>
+  <button type="button" class="show-all-btn" id="showAllBtn">Show all photos</button>
 
-  <!-- SET 1 -->
-  <div class="gallery-set">
+  <p class="no-results" id="noResults">No photos found for that job number. Double-check the number on your invoice, or contact me directly.</p>
+
+  <!-- JOB 1042 -->
+  <div class="gallery-set" data-job="1042">
+    <div class="job-number">Job #<strong>1042</strong></div>
     <div class="gallery-row">
-      <img src="Gallery-1.png" alt="Before photo">
+      <div class="img-wrap">
+        <img src="job-1042-before.jpg" alt="Before photo, job 1042">
+        <div class="img-label">Before</div>
+      </div>
       <div class="arrow">➤</div>
-      <img src="Gallery-2.png" alt="After photo">
+      <div class="img-wrap">
+        <img src="job-1042-after.jpg" alt="After photo, job 1042">
+        <div class="img-label">After</div>
+      </div>
     </div>
   </div>
 
-  <!-- SET 2 -->
-  <div class="gallery-set">
+  <!-- JOB 1043 -->
+  <div class="gallery-set" data-job="1043">
+    <div class="job-number">Job #<strong>1043</strong></div>
     <div class="gallery-row">
-      <img src="Gallery-3.png" alt="Before photo">
+      <div class="img-wrap">
+        <img src="job-1043-before.jpg" alt="Before photo, job 1043">
+        <div class="img-label">Before</div>
+      </div>
       <div class="arrow">➤</div>
-      <img src="Gallery-4.png" alt="After photo">
+      <div class="img-wrap">
+        <img src="job-1043-after.jpg" alt="After photo, job 1043">
+        <div class="img-label">After</div>
+      </div>
     </div>
   </div>
 
-  <!-- SET 3 -->
-  <div class="gallery-set">
+  <!-- JOB 1044 -->
+  <div class="gallery-set" data-job="1044">
+    <div class="job-number">Job #<strong>1044</strong></div>
     <div class="gallery-row">
-      <img src="Gallery-5.png" alt="Before photo">
+      <div class="img-wrap">
+        <img src="job-1044-before.jpg" alt="Before photo, job 1044">
+        <div class="img-label">Before</div>
+      </div>
       <div class="arrow">➤</div>
-      <img src="Gallery-6.png" alt="After photo">
+      <div class="img-wrap">
+        <img src="job-1044-after.jpg" alt="After photo, job 1044">
+        <div class="img-label">After</div>
+      </div>
     </div>
   </div>
 
   <a href="index.html" class="back-btn">Back to Homepage</a>
 
+  <script>
+    function lookupJob() {
+      const query = document.getElementById('jobSearch').value.trim();
+      const sets = document.querySelectorAll('.gallery-set');
+      const status = document.getElementById('lookupStatus');
+      const noResults = document.getElementById('noResults');
+
+      if (!query) {
+        showAll();
+        return;
+      }
+
+      let found = false;
+      sets.forEach(set => {
+        if (set.dataset.job === query) {
+          set.style.display = '';
+          found = true;
+        } else {
+          set.style.display = 'none';
+        }
+      });
+
+      if (found) {
+        status.textContent = `Showing photos for job #${query}`;
+        noResults.style.display = 'none';
+      } else {
+        status.textContent = '';
+        noResults.style.display = 'block';
+      }
+    }
+
+    function showAll() {
+      document.querySelectorAll('.gallery-set').forEach(set => {
+        set.style.display = '';
+      });
+      document.getElementById('lookupStatus').textContent = '';
+      document.getElementById('noResults').style.display = 'none';
+      document.getElementById('jobSearch').value = '';
+    }
+
+    // allow Enter key to trigger search
+    document.getElementById('jobSearch').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+        lookupJob();
+      }
+    });
+
+    document.getElementById('findBtn').addEventListener('click', lookupJob);
+    document.getElementById('showAllBtn').addEventListener('click', showAll);
+  </script>
 </body>
 </html>
