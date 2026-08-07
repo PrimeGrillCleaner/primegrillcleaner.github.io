@@ -75,8 +75,8 @@
       margin-right: 8px;
     }
     .btn-primary {
-      background: #2563eb;
-      color: #fff;
+      background: #90D5FF;
+      color: #0b3550;
     }
     .btn-secondary {
       background: #e5e7eb;
@@ -121,8 +121,9 @@
   <!-- Basic info -->
   <div class="row">
     <div class="col">
-      <label for="invoiceNumber">Invoice #</label>
-      <input id="invoiceNumber" type="text" placeholder="PGC-001">
+      <label for="invoiceNumber">Job #</label>
+      <input id="invoiceNumber" type="text" placeholder="1042">
+      <div style="font-size:0.75rem;color:#6b7280;margin-top:2px;">Used for before/after photo lookup</div>
     </div>
     <div class="col">
       <label for="invoiceDate">Invoice date</label>
@@ -217,7 +218,7 @@
       <span id="previewClientAddress"></span>
     </div>
     <div style="margin-top:8px;">
-      <strong>Invoice #:</strong> <span id="previewInvoiceNumber"></span><br>
+      <strong>Job #:</strong> <span id="previewInvoiceNumber"></span><br>
       <strong>Date:</strong> <span id="previewInvoiceDate"></span><br>
       <strong>Due:</strong> <span id="previewDueDate"></span>
     </div>
