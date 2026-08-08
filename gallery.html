@@ -337,16 +337,18 @@
   <a href="index.html" class="back-btn">Back to Homepage</a>
 
   <script>
-    // Images live in the "Gallery-Photos" subfolder of the repo, named
-    // sequentially (IMAGE-001.jpg, IMAGE-002.jpg, ...) as you upload them.
-    // This list is just the map of "which image number goes where" —
-    // update the numbers below to match what you actually upload.
+    // Images live in the "Gallery-Photos" subfolder of the repo, with a
+    // further subfolder PER JOB (e.g. Gallery-Photos/Job 1/, Gallery-Photos/Job 2/...).
+    // Inside each job folder, photos are named sequentially starting over
+    // at IMAGE-001 for that job. This list maps each job number to its
+    // folder name and image files — update to match what you upload.
     const GALLERY_FOLDER = "Gallery-Photos/";
 
     // ---- Add new jobs here. Each job can have any number of photo sets. ----
     const jobs = [
       {
         job: "1000",
+        folder: "Job 1",
         sets: [
           { before: "IMAGE-001.png", after: "IMAGE-002.png" },
           { before: "IMAGE-003.png", after: "IMAGE-004.png" },
@@ -355,18 +357,20 @@
       },
       {
         job: "1001",
+        folder: "Job 2",
         sets: [
-          { before: "IMAGE-007.png", after: "IMAGE-008.png" },
-          { before: "IMAGE-009.png", after: "IMAGE-010.png" },
-          { before: "IMAGE-011.png", after: "IMAGE-012.png" }
+          { before: "IMAGE-001.png", after: "IMAGE-002.png" },
+          { before: "IMAGE-003.png", after: "IMAGE-004.png" },
+          { before: "IMAGE-005.png", after: "IMAGE-006.png" }
         ]
       },
       {
         job: "1002",
+        folder: "Job 3",
         sets: [
-          { before: "IMAGE-013.png", after: "IMAGE-014.png" },
-          { before: "IMAGE-015.png", after: "IMAGE-016.png" },
-          { before: "IMAGE-017.png", after: "IMAGE-018.png" }
+          { before: "IMAGE-001.png", after: "IMAGE-002.png" },
+          { before: "IMAGE-003.png", after: "IMAGE-004.png" },
+          { before: "IMAGE-005.png", after: "IMAGE-006.png" }
         ]
       }
     ];
@@ -395,14 +399,18 @@
         const content = document.createElement('div');
         content.className = 'job-content';
 
+        // Build the full folder path for this job, URL-encoding the folder
+        // name so spaces (e.g. "Job 1") never break the image links.
+        const jobFolderPath = GALLERY_FOLDER + encodeURIComponent(jobData.folder) + '/';
+
         jobData.sets.forEach((set) => {
           const setDiv = document.createElement('div');
           setDiv.className = 'photo-set';
           setDiv.innerHTML = `
             <div class="compare-slider">
-              <img class="img-before" src="${GALLERY_FOLDER}${set.before}" alt="Before photo, job ${jobData.job}">
+              <img class="img-before" src="${jobFolderPath}${set.before}" alt="Before photo, job ${jobData.job}">
               <div class="img-after-wrap">
-                <img class="img-after" src="${GALLERY_FOLDER}${set.after}" alt="After photo, job ${jobData.job}">
+                <img class="img-after" src="${jobFolderPath}${set.after}" alt="After photo, job ${jobData.job}">
               </div>
               <span class="compare-tag before-tag">Before</span>
               <span class="compare-tag after-tag">After</span>
