@@ -202,7 +202,7 @@
       width: 100%;
       height: 100%;
       overflow: hidden;
-      clip-path: inset(0 50% 0 0);
+      clip-path: inset(0 100% 0 0);
     }
 
     .compare-slider .img-after-wrap img {
@@ -217,25 +217,44 @@
       position: absolute;
       top: 0.6rem;
       z-index: 3;
-      font-size: 0.7rem;
+      font-size: 0.72rem;
       font-weight: 700;
       letter-spacing: 0.05em;
       text-transform: uppercase;
-      background: rgba(0,0,0,0.6);
       color: #fff;
-      padding: 0.25rem 0.6rem;
+      padding: 0.3rem 0.7rem;
       border-radius: 999px;
       pointer-events: none;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.4);
     }
 
-    .compare-tag.before-tag { left: 0.6rem; }
-    .compare-tag.after-tag { right: 0.6rem; }
+    .compare-tag.before-tag {
+      right: 0.6rem;
+      background: #6b5b52;
+    }
+
+    .compare-tag.after-tag {
+      left: 0.6rem;
+      background: #2f7d5c;
+    }
+
+    .compare-hint {
+      text-align: center;
+      font-size: 0.78rem;
+      color: #888;
+      margin-top: 0.6rem;
+      letter-spacing: 0.02em;
+    }
+
+    .compare-hint strong {
+      color: #D28369;
+    }
 
     .slider-handle {
       position: absolute;
       top: 0;
       bottom: 0;
-      left: 50%;
+      left: 0%;
       width: 0;
       z-index: 2;
       pointer-events: none;
@@ -339,9 +358,9 @@
   <script>
     // Images live in the "Gallery-Photos" subfolder of the repo, with a
     // further subfolder PER JOB (e.g. Gallery-Photos/Job 1/, Gallery-Photos/Job 2/...).
-    // Inside each job folder, photos are named sequentially starting over
-    // at IMAGE-001 for that job. This list maps each job number to its
-    // folder name and image files — update to match what you upload.
+    // Inside each job folder, name photos so the filename itself says
+    // what it is — e.g. "set1-before.png" / "set1-after.png" — so there's
+    // no chance of mixing up which photo is which.
     const GALLERY_FOLDER = "Gallery-Photos/";
 
     // ---- Add new jobs here. Each job can have any number of photo sets. ----
@@ -350,27 +369,27 @@
         job: "1000",
         folder: "Job 1",
         sets: [
-          { before: "IMAGE-001.png", after: "IMAGE-002.png" },
-          { before: "IMAGE-003.png", after: "IMAGE-004.png" },
-          { before: "IMAGE-005.png", after: "IMAGE-006.png" }
+          { before: "set1-before.png", after: "set1-after.png" },
+          { before: "set2-before.png", after: "set2-after.png" },
+          { before: "set3-before.png", after: "set3-after.png" }
         ]
       },
       {
         job: "1001",
         folder: "Job 2",
         sets: [
-          { before: "IMAGE-007.png", after: "IMAGE-008.png" },
-          { before: "IMAGE-009.png", after: "IMAGE-010.png" },
-          { before: "IMAGE-011.png", after: "IMAGE-012.png" }
+          { before: "set1-before.png", after: "set1-after.png" },
+          { before: "set2-before.png", after: "set2-after.png" },
+          { before: "set3-before.png", after: "set3-after.png" }
         ]
       },
       {
         job: "1002",
         folder: "Job 3",
         sets: [
-          { before: "IMAGE-001.png", after: "IMAGE-002.png" },
-          { before: "IMAGE-003.png", after: "IMAGE-004.png" },
-          { before: "IMAGE-005.png", after: "IMAGE-006.png" }
+          { before: "set1-before.png", after: "set1-after.png" },
+          { before: "set2-before.png", after: "set2-after.png" },
+          { before: "set3-before.png", after: "set3-after.png" }
         ]
       }
     ];
@@ -415,8 +434,9 @@
               <span class="compare-tag before-tag">Before</span>
               <span class="compare-tag after-tag">After</span>
               <div class="slider-handle"></div>
-              <input type="range" min="0" max="100" value="50" aria-label="Drag to compare before and after photos">
+              <input type="range" min="0" max="100" value="0" aria-label="Drag to compare before and after photos">
             </div>
+            <div class="compare-hint">◂ Drag the handle to reveal the <strong>after</strong> photo ▸</div>
           `;
           content.appendChild(setDiv);
 
