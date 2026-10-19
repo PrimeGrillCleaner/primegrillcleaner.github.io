@@ -418,44 +418,66 @@
   <a href="index.html" class="back-btn">&larr; Back to homepage</a>
  
   <script>
-    // Images live in the "Gallery-Photos" subfolder of the repo, with a
-    // further subfolder PER JOB (e.g. Gallery-Photos/Job 1/, Gallery-Photos/Job 2/...).
-    // Inside each job folder, photos are named sequentially starting over
-    // at IMAGE-001 for that job. Order matters: within each set, the
-    // BEFORE photo's number always comes first, AFTER comes second.
+    // ------------------------------------------------------------------
+    // HOW THIS WORKS
+    // Photos live in  Gallery-Photos/<folder>/IMAGE-0NN.jpg
+    // Photo numbers keep counting up across ALL jobs (Job 2 starts at 007, etc).
+    //
+    // To add a job, copy one line below and change 3 things:
+    //   job     -> the Job # on the invoice (this is what customers type)
+    //   folder  -> the exact folder name in GitHub (e.g. "Job 12")
+    //   photos  -> the photo NUMBERS in order: before, after, before, after...
+    //              (an odd one left over at the end shows as a single photo)
+    // ------------------------------------------------------------------
     const GALLERY_FOLDER = "Gallery-Photos/";
  
-    // ---- Add new jobs here. Each job can have any number of photo sets. ----
     const jobs = [
-      {
-        job: "1000",
-        folder: "Job 1",
-        sets: [
-          { before: "IMAGE-001.png", after: "IMAGE-002.png" },
-          { before: "IMAGE-003.png", after: "IMAGE-004.png" },
-          { before: "IMAGE-005.png", after: "IMAGE-006.png" }
-        ]
-      },
-      {
-        job: "1001",
-        folder: "Job 2",
-        sets: [
-          { before: "IMAGE-001.png", after: "IMAGE-002.png" },
-          { before: "IMAGE-003.png", after: "IMAGE-004.png" },
-          { before: "IMAGE-005.png", after: "IMAGE-006.png" }
-        ]
-      },
-      {
-        job: "1002",
-        folder: "Job 3",
-        sets: [
-          { before: "IMAGE-001.png", after: "IMAGE-002.png" },
-          { before: "IMAGE-003.png", after: "IMAGE-004.png" },
-          { before: "IMAGE-005.png", after: "IMAGE-006.png" }
-        ]
-      }
+      { job: "1001", folder: "Job 1",  photos: [1, 2, 3, 4, 5, 6] },
+      { job: "1002", folder: "Job 2",  photos: [7, 8, 9, 10, 11, 12] },
+      { job: "1003", folder: "Job 3",  photos: [13, 14, 15, 16, 17, 18] },
+      { job: "1004", folder: "Job 4",  photos: [19, 20, 21, 22, 23, 24] },
+      { job: "1005", folder: "Job 5",  photos: [25, 26, 27, 28, 29, 30] },
+      { job: "1006", folder: "Job 6",  photos: [31, 32, 33, 34, 35, 36] },
+      { job: "1007", folder: "Job 7",  photos: [37, 38, 39, 40, 41, 42] },
+      { job: "1008", folder: "Job 8",  photos: [43, 44, 45, 46, 47, 48] },
+      { job: "1009", folder: "Job 9",  photos: [49, 50, 51, 52, 53, 54] },
+      // Job 10: photo 055 is a single photo (no 056 exists), then 057/058 and 059/060 are pairs
+      { job: "1010", folder: "Job 10", sets: [
+          { before: "IMAGE-055.jpg", single: true },
+          { before: "IMAGE-057.jpg", after: "IMAGE-058.jpg" },
+          { before: "IMAGE-059.jpg", after: "IMAGE-060.jpg" }
+      ] },
+      { job: "1011", folder: "Job 11", photos: [61, 62, 63, 64, 65, 66, 67, 68] }
     ];
-    // --------------------------------------------------------------------
+ 
+    // Safety net: photos are loaded as .jpg first (small and fast). If a .jpg isn't in
+    // the repo (yet), the page quietly tries the .png of the same name instead.
+    document.addEventListener('error', function (e) {
+      const img = e.target;
+      if (img && img.tagName === 'IMG' && /\.jpg$/i.test(img.getAttribute('src')) && !img.dataset.triedPng) {
+        img.dataset.triedPng = '1';
+        img.src = img.getAttribute('src').replace(/\.jpg$/i, '.png');
+        e.stopPropagation();
+      }
+    }, true);
+ 
+    // Turns a photo number (or a full file name) into a file name
+    function photoFile(n) {
+      return typeof n === 'number' ? 'IMAGE-' + String(n).padStart(3, '0') + '.jpg' : n;
+    }
+ 
+    // Turns "photos" into sets of { before, after }; a leftover odd photo becomes a single
+    function buildSets(jobData) {
+      if (jobData.sets) return jobData.sets;   // old-style explicit sets still work
+      const sets = [];
+      const list = jobData.photos || [];
+      for (let i = 0; i < list.length; i += 2) {
+        sets.push(i + 1 < list.length
+          ? { before: photoFile(list[i]), after: photoFile(list[i + 1]) }
+          : { before: photoFile(list[i]), single: true });
+      }
+      return sets;
+    }
  
     const container = document.getElementById('galleryContainer');
  
@@ -580,12 +602,12 @@
         // name so spaces (e.g. "Job 1") never break the image links.
         const jobFolderPath = GALLERY_FOLDER + encodeURIComponent(jobData.folder) + '/';
  
-        jobData.sets.forEach((set) => {
+        buildSets(jobData).forEach((set) => {
           const setDiv = document.createElement('div');
           setDiv.className = 'photo-set';
  
           // Only one photo in this set (no before/after pair)? Show it as a plain photo.
-          if (!set.before || !set.after) {
+          if (set.single || !set.before || !set.after) {
             const only = set.before || set.after;
             setDiv.innerHTML = `
               <div class="single-photo">
