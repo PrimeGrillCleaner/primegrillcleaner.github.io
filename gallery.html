@@ -14,14 +14,14 @@
       padding: 2rem;
       line-height: 1.6;
     }
-
+ 
     h1 {
       text-align: center;
       margin-bottom: 0.5rem;
       color: #D28369;
       font-size: 2rem;
     }
-
+ 
     .subtitle {
       text-align: center;
       color: #bbbbbb;
@@ -31,14 +31,14 @@
       margin-left: auto;
       margin-right: auto;
     }
-
+ 
     .lookup-bar {
       max-width: 420px;
       margin: 0 auto 1rem;
       display: flex;
       gap: 0.6rem;
     }
-
+ 
     .lookup-bar input {
       flex: 1;
       padding: 0.65rem 0.9rem;
@@ -48,13 +48,13 @@
       color: #e6e6e6;
       font-size: 0.95rem;
     }
-
+ 
     .lookup-bar input:focus {
       outline: none;
       border-color: #D28369;
       box-shadow: 0 0 0 2px rgba(210, 131, 105, 0.3);
     }
-
+ 
     .lookup-bar button {
       padding: 0.65rem 1.2rem;
       border-radius: 0.5rem;
@@ -65,11 +65,11 @@
       cursor: pointer;
       white-space: nowrap;
     }
-
+ 
     .lookup-bar button:hover {
       background: #dba594;
     }
-
+ 
     .lookup-status {
       text-align: center;
       font-size: 0.85rem;
@@ -77,7 +77,7 @@
       margin-bottom: 1rem;
       min-height: 1.2rem;
     }
-
+ 
     .show-all-btn {
       position: relative;
       z-index: 5;
@@ -92,12 +92,12 @@
       cursor: pointer;
       pointer-events: auto;
     }
-
+ 
     .show-all-btn:hover {
       border-color: #D28369;
       color: #D28369;
     }
-
+ 
     .no-results {
       text-align: center;
       color: #bbbbbb;
@@ -105,7 +105,7 @@
       margin: 2rem 0;
       display: none;
     }
-
+ 
     .job-accordion {
       max-width: 950px;
       margin: 0 auto 1rem;
@@ -115,7 +115,7 @@
       overflow: hidden;
       box-shadow: 0 4px 12px rgba(0,0,0,0.3);
     }
-
+ 
     .job-header {
       width: 100%;
       display: flex;
@@ -130,52 +130,54 @@
       cursor: pointer;
       text-align: left;
     }
-
+ 
     .job-header:hover {
       background: #313131;
     }
-
+ 
     .job-header .job-label strong {
       color: #D28369;
     }
-
+ 
     .job-header .chevron {
       font-size: 0.9rem;
       color: #D28369;
       transition: transform 0.2s ease;
     }
-
+ 
     .job-accordion.open .chevron {
       transform: rotate(180deg);
     }
-
+ 
     .job-content {
       display: none;
       padding: 0 1.3rem 1.3rem;
     }
-
+ 
     .job-accordion.open .job-content {
       display: block;
     }
-
+ 
     .photo-set {
       padding-top: 1.2rem;
       margin-top: 1.2rem;
       border-top: 1px solid #383838;
     }
-
+ 
     .photo-set:first-child {
       padding-top: 0;
       margin-top: 0;
       border-top: none;
     }
-
+ 
+    /* ---------- Before / After compare slider ---------- */
     .compare-slider {
+      --pos: 8%;
       position: relative;
       width: 100%;
       max-width: 700px;
       margin: 0 auto;
-      height: 340px;
+      aspect-ratio: 4 / 3;
       border-radius: 0.7rem;
       overflow: hidden;
       border: 1px solid #3a3a3a;
@@ -183,153 +185,208 @@
       user-select: none;
       -webkit-user-select: none;
     }
-
+ 
     .compare-slider img {
       position: absolute;
-      top: 0;
-      left: 0;
+      inset: 0;
       width: 100%;
       height: 100%;
       object-fit: cover;
       pointer-events: none;
       display: block;
     }
-
+ 
     .compare-slider .img-after-wrap {
       position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      inset: 0;
       overflow: hidden;
-      clip-path: inset(0 100% 0 0);
+      clip-path: inset(0 calc(100% - var(--pos)) 0 0);
     }
-
-    .compare-slider .img-after-wrap img {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-    }
-
+ 
     .compare-tag {
       position: absolute;
-      top: 0.6rem;
+      top: 0.7rem;
       z-index: 3;
       font-size: 0.72rem;
       font-weight: 700;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.06em;
       text-transform: uppercase;
       color: #fff;
-      padding: 0.3rem 0.7rem;
+      padding: 0.3rem 0.75rem;
       border-radius: 999px;
       pointer-events: none;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.45);
+      transition: opacity 0.2s ease;
     }
-
-    .compare-tag.before-tag {
-      right: 0.6rem;
-      background: #6b5b52;
-    }
-
-    .compare-tag.after-tag {
-      left: 0.6rem;
-      background: #2f7d5c;
-    }
-
-    .compare-hint {
-      text-align: center;
-      font-size: 0.78rem;
-      color: #888;
-      margin-top: 0.6rem;
-      letter-spacing: 0.02em;
-    }
-
-    .compare-hint strong {
-      color: #D28369;
-    }
-
+    .compare-tag.before-tag { right: 0.7rem; background: #6b5b52; }
+    .compare-tag.after-tag  { left: 0.7rem;  background: #2f7d5c; }
+ 
     .slider-handle {
       position: absolute;
       top: 0;
       bottom: 0;
-      left: 0%;
+      left: var(--pos);
       width: 0;
       z-index: 2;
       pointer-events: none;
-      transform: translateX(-50%);
     }
-
     .slider-handle::before {
       content: "";
       position: absolute;
       top: 0;
       bottom: 0;
-      left: 50%;
-      width: 2px;
+      left: -1.5px;
+      width: 3px;
       background: #fff;
-      transform: translateX(-50%);
-      box-shadow: 0 0 6px rgba(0,0,0,0.5);
+      box-shadow: 0 0 8px rgba(0,0,0,0.55);
     }
-
-    .slider-handle::after {
-      content: "◂▸";
+    .slider-knob {
       position: absolute;
       top: 50%;
-      left: 50%;
+      left: 0;
       transform: translate(-50%, -50%);
-      background: #D28369;
-      color: #111;
-      font-size: 0.8rem;
-      font-weight: 700;
       width: 34px;
       height: 34px;
       border-radius: 50%;
+      background: #D28369;
+      border: 2.5px solid #fff;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.5);
       display: flex;
       align-items: center;
       justify-content: center;
-      letter-spacing: -2px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+      transition: transform 0.15s ease;
     }
-
+    .slider-knob svg { width: 17px; height: 17px; fill: #111; }
+    .compare-slider.dragging .slider-knob { transform: translate(-50%, -50%) scale(1.12); }
+ 
     .compare-slider input[type="range"] {
       position: absolute;
-      top: 0;
-      left: 0;
+      inset: 0;
       width: 100%;
       height: 100%;
       margin: 0;
       opacity: 0;
       cursor: ew-resize;
       z-index: 4;
+      touch-action: pan-y;   /* horizontal drag moves slider, vertical swipe still scrolls page */
       -webkit-appearance: none;
       appearance: none;
     }
-
-    .back-btn {
-      display: block;
-      width: fit-content;
-      margin: 2rem auto 0;
-      padding: 0.7rem 1.4rem;
+    .compare-slider input[type="range"]:focus-visible ~ .slider-handle .slider-knob {
+      outline: 3px solid #fff;
+      outline-offset: 2px;
+    }
+ 
+    .compare-slider .img-missing {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.8rem;
+      color: #e08a8a;
+      background: #1f1f1f;
+    }
+ 
+    .single-photo {
+      max-width: 700px;
+      margin: 0 auto;
+      border-radius: 0.7rem;
+      overflow: hidden;
+      border: 1px solid #3a3a3a;
+    }
+    .single-photo img { display: block; width: 100%; height: auto; }
+ 
+    .compare-controls {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0.6rem;
+      margin-top: 0.75rem;
+      flex-wrap: wrap;
+    }
+    .compare-controls button {
+      padding: 0.4rem 1rem;
+      border-radius: 999px;
+      border: 1px solid #444;
+      background: transparent;
+      color: #e6e6e6;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .compare-controls button:hover { border-color: #D28369; color: #D28369; }
+    .compare-controls .hint { font-size: 0.78rem; color: #888; }
+ 
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: rgba(0,0,0,0.92);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+    .lightbox-inner { width: min(96vw, 1100px); }
+    .lightbox .compare-slider { max-width: none; aspect-ratio: 3 / 2; max-height: 80vh; }
+    .lightbox-close {
+      position: absolute;
+      top: 0.8rem;
+      right: 1rem;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: 1px solid #555;
+      background: #222;
+      color: #fff;
+      font-size: 1.6rem;
+      line-height: 1;
+      cursor: pointer;
+      z-index: 2;
+    }
+    .lightbox-close:hover { border-color: #D28369; color: #D28369; }
+ 
+    .cta-box {
+      max-width: 700px;
+      margin: 2.5rem auto 0;
+      text-align: center;
+    }
+    .cta-box p { margin: 0 0 0.8rem; color: #ddd; }
+    .cta-box a {
+      display: inline-block;
+      padding: 0.6rem 1.3rem;
       background: #D28369;
       color: #111;
       font-weight: 600;
       border-radius: 999px;
       text-decoration: none;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+    }
+    .cta-box a:hover { background: #dba594; }
+ 
+    .back-btn {
+      display: block;
+      width: fit-content;
+      margin: 2.2rem auto 1rem;
+      padding: 0.3rem 0.2rem;
+      color: #999;
+      font-size: 0.9rem;
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
       transition: 0.2s;
     }
-
+ 
     .back-btn:hover {
-      background: #dba594;
-      transform: translateY(-2px);
+      color: #D28369;
+      border-bottom-color: #D28369;
     }
-
+ 
     @media (max-width: 700px) {
-      .compare-slider {
-        height: 260px;
-      }
+      .compare-slider { aspect-ratio: 1 / 1; }
+      .slider-knob { width: 30px; height: 30px; }
       .lookup-bar {
         flex-direction: column;
       }
@@ -341,20 +398,25 @@
   <p class="subtitle">
     Have a job number from your invoice? Enter it below to jump straight to your photos.
   </p>
-
+ 
   <div class="lookup-bar">
     <input type="text" id="jobSearch" placeholder="Enter job number (e.g. 1042)" inputmode="numeric">
     <button type="button" id="findBtn">Find Photos</button>
   </div>
   <div class="lookup-status" id="lookupStatus"></div>
   <button type="button" class="show-all-btn" id="showAllBtn">Show all jobs</button>
-
+ 
   <p class="no-results" id="noResults">No photos found for that job number. Double-check the number on your invoice, or contact me directly.</p>
-
+ 
   <div id="galleryContainer"></div>
-
-  <a href="index.html" class="back-btn">Back to Homepage</a>
-
+ 
+  <div class="cta-box">
+    <p>Like what you see?</p>
+    <a href="index.html">Book a Cleaning</a>
+  </div>
+ 
+  <a href="index.html" class="back-btn">&larr; Back to homepage</a>
+ 
   <script>
     // Images live in the "Gallery-Photos" subfolder of the repo, with a
     // further subfolder PER JOB (e.g. Gallery-Photos/Job 1/, Gallery-Photos/Job 2/...).
@@ -362,7 +424,7 @@
     // at IMAGE-001 for that job. Order matters: within each set, the
     // BEFORE photo's number always comes first, AFTER comes second.
     const GALLERY_FOLDER = "Gallery-Photos/";
-
+ 
     // ---- Add new jobs here. Each job can have any number of photo sets. ----
     const jobs = [
       {
@@ -378,9 +440,9 @@
         job: "1001",
         folder: "Job 2",
         sets: [
-          { before: "IMAGE-007.png", after: "IMAGE-008.png" },
-          { before: "IMAGE-009.png", after: "IMAGE-010.png" },
-          { before: "IMAGE-011.png", after: "IMAGE-012.png" }
+          { before: "IMAGE-001.png", after: "IMAGE-002.png" },
+          { before: "IMAGE-003.png", after: "IMAGE-004.png" },
+          { before: "IMAGE-005.png", after: "IMAGE-006.png" }
         ]
       },
       {
@@ -394,80 +456,169 @@
       }
     ];
     // --------------------------------------------------------------------
-
+ 
     const container = document.getElementById('galleryContainer');
-
+ 
+    // Builds the HTML for one before/after slider (used in the page and in the enlarged view)
+    function sliderMarkup(set, folderPath, jobNum, withExpand) {
+      return `
+        <div class="compare-slider">
+          <img class="img-before" src="${folderPath}${set.before}" alt="Before photo, job ${jobNum}" loading="lazy" decoding="async">
+          <div class="img-after-wrap">
+            <img class="img-after" src="${folderPath}${set.after}" alt="After photo, job ${jobNum}" loading="lazy" decoding="async">
+          </div>
+          <div class="img-missing"></div>
+          <span class="compare-tag before-tag">Before</span>
+          <span class="compare-tag after-tag">After</span>
+          <input type="range" min="0" max="100" step="0.1" value="8" aria-label="Drag to compare before and after photos">
+          <div class="slider-handle">
+            <div class="slider-knob">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5l-7 7 7 7V5zm8 0v14l7-7-7-7z"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="compare-controls">
+          <button type="button" data-go="8">Before</button>
+          ${withExpand ? '<button type="button" data-expand class="expand-btn" aria-label="View larger">⤢ Enlarge</button>' : '<span class="hint">Drag the slider</span>'}
+          <button type="button" data-go="100">After</button>
+        </div>`;
+    }
+ 
+    // Full-screen style enlarged view
+    function openLightbox(set, folderPath, jobNum) {
+      const overlay = document.createElement('div');
+      overlay.className = 'lightbox';
+      overlay.innerHTML = `
+        <button type="button" class="lightbox-close" aria-label="Close">&times;</button>
+        <div class="lightbox-inner">${sliderMarkup(set, folderPath, jobNum, false)}</div>`;
+      document.body.appendChild(overlay);
+      document.body.style.overflow = 'hidden';
+      setupSlider(overlay.querySelector('.lightbox-inner'));
+      const close = () => {
+        overlay.remove();
+        document.body.style.overflow = '';
+        document.removeEventListener('keydown', onKey);
+      };
+      const onKey = (e) => { if (e.key === 'Escape') close(); };
+      document.addEventListener('keydown', onKey);
+      overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
+      overlay.querySelector('.lightbox-close').addEventListener('click', close);
+    }
+ 
+    // Wires up one before/after slider (drag, buttons, tag fade, first-view nudge).
+    function setupSlider(setDiv) {
+      const slider = setDiv.querySelector('.compare-slider');
+      const range  = slider.querySelector('input[type="range"]');
+      const beforeTag = slider.querySelector('.before-tag');
+      const afterTag  = slider.querySelector('.after-tag');
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const REST = 8;   // starting spot: handle + a sliver of the After photo stay visible
+      let anim = null;
+ 
+      function setPos(v) {
+        slider.style.setProperty('--pos', v + '%');
+        afterTag.style.opacity  = v < 14 ? 0 : 1;   // After tag hides when its side is too small to hold it
+        beforeTag.style.opacity = v > 86 ? 0 : 1;   // Before tag hides when its side is tiny
+      }
+ 
+      function animateTo(target, ms) {
+        cancelAnimationFrame(anim);
+        const start = parseFloat(range.value);
+        if (reduceMotion || ms === 0) { range.value = target; setPos(target); return; }
+        const t0 = performance.now();
+        (function step(now) {
+          const t = Math.min(1, (now - t0) / ms);
+          const e = t < 0.5 ? 2*t*t : 1 - Math.pow(-2*t + 2, 2) / 2;   // ease in-out
+          const v = start + (target - start) * e;
+          range.value = v; setPos(v);
+          if (t < 1) anim = requestAnimationFrame(step);
+        })(t0);
+      }
+ 
+      range.addEventListener('input', () => { cancelAnimationFrame(anim); setPos(range.value); });
+      range.addEventListener('pointerdown', () => { slider.classList.add('dragging'); });
+      ['pointerup', 'pointercancel', 'blur'].forEach(ev =>
+        range.addEventListener(ev, () => slider.classList.remove('dragging')));
+ 
+      setDiv.querySelectorAll('[data-go]').forEach(btn =>
+        btn.addEventListener('click', () => { animateTo(Number(btn.dataset.go), 600); }));
+ 
+      // If a file name is wrong, say so instead of showing a blank box
+      slider.querySelectorAll('img').forEach(img => {
+        img.addEventListener('error', () => {
+          const m = slider.querySelector('.img-missing');
+          m.style.display = 'flex';
+          m.textContent = 'Photo not found: ' + decodeURIComponent(img.getAttribute('src'));
+        });
+      });
+ 
+      setPos(REST);
+    }
+ 
     function renderGallery() {
       container.innerHTML = '';
       jobs.forEach(jobData => {
         const accordion = document.createElement('div');
         accordion.className = 'job-accordion';
-        accordion.dataset.job = jobData.job;
-
+        accordion.dataset.job = jobData.job || '';
+ 
         const header = document.createElement('button');
         header.type = 'button';
         header.className = 'job-header';
         header.innerHTML = `
-          <span class="job-label">Job #<strong>${jobData.job}</strong></span>
+          <span class="job-label">${jobData.job ? `Job #<strong>${jobData.job}</strong>` : `<strong>${jobData.title || 'More photos'}</strong>`}</span>
           <span class="chevron">▼</span>
         `;
         header.addEventListener('click', () => {
           accordion.classList.toggle('open');
         });
-
+ 
         const content = document.createElement('div');
         content.className = 'job-content';
-
+ 
         // Build the full folder path for this job, URL-encoding the folder
         // name so spaces (e.g. "Job 1") never break the image links.
         const jobFolderPath = GALLERY_FOLDER + encodeURIComponent(jobData.folder) + '/';
-
+ 
         jobData.sets.forEach((set) => {
           const setDiv = document.createElement('div');
           setDiv.className = 'photo-set';
-          setDiv.innerHTML = `
-            <div class="compare-slider">
-              <img class="img-before" src="${jobFolderPath}${set.before}" alt="Before photo, job ${jobData.job}">
-              <div class="img-after-wrap">
-                <img class="img-after" src="${jobFolderPath}${set.after}" alt="After photo, job ${jobData.job}">
+ 
+          // Only one photo in this set (no before/after pair)? Show it as a plain photo.
+          if (!set.before || !set.after) {
+            const only = set.before || set.after;
+            setDiv.innerHTML = `
+              <div class="single-photo">
+                <img src="${jobFolderPath}${only}" alt="Photo, job ${jobData.job || jobData.title || ''}" loading="lazy" decoding="async">
               </div>
-              <span class="compare-tag before-tag">Before</span>
-              <span class="compare-tag after-tag">After</span>
-              <div class="slider-handle"></div>
-              <input type="range" min="0" max="100" value="0" aria-label="Drag to compare before and after photos">
-            </div>
-            <div class="compare-hint">◂ Drag the handle to reveal the <strong>after</strong> photo ▸</div>
-          `;
+            `;
+            content.appendChild(setDiv);
+            return;
+          }
+          setDiv.innerHTML = sliderMarkup(set, jobFolderPath, jobData.job, true);
           content.appendChild(setDiv);
-
-          const slider = setDiv.querySelector('input[type="range"]');
-          const afterWrap = setDiv.querySelector('.img-after-wrap');
-          const handle = setDiv.querySelector('.slider-handle');
-
-          slider.addEventListener('input', () => {
-            const val = slider.value;
-            afterWrap.style.clipPath = `inset(0 ${100 - val}% 0 0)`;
-            handle.style.left = val + '%';
-          });
+          setupSlider(setDiv);
+          const expandBtn = setDiv.querySelector('[data-expand]');
+          if (expandBtn) expandBtn.addEventListener('click', () => openLightbox(set, jobFolderPath, jobData.job));
         });
-
+ 
         accordion.appendChild(header);
         accordion.appendChild(content);
         container.appendChild(accordion);
       });
     }
-
+ 
     function lookupJob() {
       const query = document.getElementById('jobSearch').value.trim();
       const status = document.getElementById('lookupStatus');
       const noResults = document.getElementById('noResults');
       const accordions = document.querySelectorAll('.job-accordion');
-
+ 
       if (!query) {
         showAll();
         return;
       }
-
+ 
       let found = false;
       accordions.forEach(acc => {
         if (acc.dataset.job === query) {
@@ -479,7 +630,7 @@
           acc.classList.remove('open');
         }
       });
-
+ 
       if (found) {
         status.textContent = `Showing photos for job #${query}`;
         noResults.style.display = 'none';
@@ -488,7 +639,7 @@
         noResults.style.display = 'block';
       }
     }
-
+ 
     function showAll() {
       document.querySelectorAll('.job-accordion').forEach(acc => {
         acc.style.display = '';
@@ -498,17 +649,24 @@
       document.getElementById('noResults').style.display = 'none';
       document.getElementById('jobSearch').value = '';
     }
-
+ 
     document.getElementById('jobSearch').addEventListener('keydown', function(e) {
       if (e.key === 'Enter') {
         lookupJob();
       }
     });
-
+ 
     document.getElementById('findBtn').addEventListener('click', lookupJob);
     document.getElementById('showAllBtn').addEventListener('click', showAll);
-
+ 
     renderGallery();
+ 
+    // Direct link support: gallery.html?job=1000 opens that job automatically
+    const urlJob = new URLSearchParams(window.location.search).get('job');
+    if (urlJob) {
+      document.getElementById('jobSearch').value = urlJob.trim();
+      lookupJob();
+    }
   </script>
 </body>
 </html>
